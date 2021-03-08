@@ -106,13 +106,16 @@ class Factory(RouterMixin):
 
         servers = self.readonly_topo.group_names
         logger.info('Available servers: {}'.format(list(servers)))
+        listServers = list(servers)
 
-        ring = HashRing(servers)
+        # ring = HashRing(servers)
 
         routing = {}
-
+        i=0
         for f in files:
-            target_host = ring.get_node(str(f.id))
+            target_host = listServers[i%len(listServers)]
+            logger.info('Target host for {} is: {}'.format(i,target_host))
+            i = i+1
             sub = routing.get(target_host, None)
             if not sub:
                 sub = []
